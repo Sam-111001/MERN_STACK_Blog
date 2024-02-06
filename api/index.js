@@ -1,7 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import userRoutes from "./routes/user.router.js";
+import userRoutes from "./routes/user.route.js";
+import authRouter from "./routes/auth.route.js";
 
 //Loading the .env file into process.env
 dotenv.config();
@@ -19,9 +20,13 @@ mongoose
 //Creating an express application
 const app = express();
 
+//Allowing the server to get json requests
+app.use(express.json());
+
 //Creating APIs
 //Api for user
 app.use("/api/user", userRoutes);
+app.use("/api/auth", authRouter);
 
 //Application listening on port 3000
 app.listen(3000, () => {
