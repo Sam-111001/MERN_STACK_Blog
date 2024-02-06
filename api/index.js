@@ -28,6 +28,18 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRouter);
 
+//Creating a middle to handle errors
+app.use((err, req, res, next) => {
+  const errorCode = err.statusCode || 500;
+  const errorMessage = err.message || "Internal Server Error";
+  res.status(errorCode).json({
+    success: false,
+    errorCode,
+    errorMessage,
+  });
+  next();
+});
+
 //Application listening on port 3000
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
