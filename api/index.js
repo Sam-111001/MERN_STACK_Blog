@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 import userRoutes from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 
@@ -20,6 +21,8 @@ mongoose
 //Creating an express application
 const app = express();
 
+app.use(cors());
+
 //Allowing the server to get json requests
 app.use(express.json());
 
@@ -30,7 +33,7 @@ app.use("/api/auth", authRouter);
 
 //Creating a middle to handle errors
 app.use((err, req, res, next) => {
-  const errorCode = err.statusCode || 500;
+  const errorCode = err.errorCode || 500;
   const errorMessage = err.message || "Internal Server Error";
   res.status(errorCode).json({
     success: false,
